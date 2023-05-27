@@ -1,4 +1,5 @@
 import discord
+import guess_the_number
 
 intents = discord.Intents.default()
 client = discord.Client(intents=intents)
@@ -11,14 +12,33 @@ async def on_ready():
     print(client.user)
 
 
+game = ""
+num = 0
+
+
 @client.event
 async def on_message(message):
+    global game, num
     if message.author == client.user:
         return
 
     msg = message.content
 
-    if msg.startswith('hello LabBot'):
-        await message.channel.send("Hello " + message.author.name)
+    if game != "":
+        if game == "gtn":
+            output = guess_the_number.run(int(msg), num)
+            if output == "You are correct! " + msg + " was the number.":
+                game = ""
+            await message.channel.send(output)
 
-client.run("TOKEN")  # replace TOKEN with the actual token
+    if msg == "Hello LabBot":
+        await message.channel.send("Hello " + message.author.name + '!')
+
+    if msg == "!guess":
+        await message.channel.send("Guess the number from 1-10")
+        num = guess_the_number.start_game()
+        game = "gtn"
+
+
+client.run(
+    "MTExMTgwMDkxNjU4OTQzMjkwNg.GxcOFA.QD7d9LDlaK30c03Ibsmy0YiBDOHz8Bg9HTOROY")  # replace TOKEN with the actual token
