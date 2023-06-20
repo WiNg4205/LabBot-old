@@ -4,18 +4,15 @@ import apis
 
 intents = discord.Intents.default()
 client = discord.Client(intents=intents)
-intents.message_content = True
-
+intents.message_content = True  
 
 @client.event
 async def on_ready():
     print('We have logged in as {0.user}'.format(client))
     print(client.user)
 
-
 game = ""
 num = 0
-
 
 @client.event
 async def on_message(message):
@@ -54,4 +51,4 @@ async def on_message(message):
         game = "gtn"
 
 
-client.run("MTExMTgwMDkxNjU4OTQzMjkwNg.GTYO9J.FzH1EYny9xowDweckDBS4tgsrjSkqYshNGDIFo")  # replace TOKEN with the actual token
+client.run("TOKEN")  # replace TOKEN with the actual token
