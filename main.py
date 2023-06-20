@@ -27,10 +27,11 @@ async def on_message(message):
 
     if game != "":
         if game == "gtn":
-            output = guess_the_number.run(int(msg), num)
-            if output == "You are correct! " + msg + " was the number.":
-                game = ""
-            await message.channel.send(output)
+            if msg.isdigit():
+                output = guess_the_number.run(int(msg), num)
+                if output == "You are correct! " + msg + " was the number.":
+                    game = ""
+                await message.channel.send(output)
 
     if msg == "Hello LabBot":
         await message.channel.send("Hello " + message.author.name + '!')
@@ -53,4 +54,4 @@ async def on_message(message):
         game = "gtn"
 
 
-client.run("TOKEN")  # replace TOKEN with the actual token
+client.run("MTExMTgwMDkxNjU4OTQzMjkwNg.GTYO9J.FzH1EYny9xowDweckDBS4tgsrjSkqYshNGDIFo")  # replace TOKEN with the actual token
