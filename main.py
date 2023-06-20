@@ -54,4 +54,4 @@ async def on_message(message):
         game = "gtn"
 
 
-client.run("MTExMTgwMDkxNjU4OTQzMjkwNg.GTYO9J.FzH1EYny9xowDweckDBS4tgsrjSkqYshNGDIFo")  # replace TOKEN with the actual token
+client.run("TOKEN")  # replace TOKEN with the actual token
