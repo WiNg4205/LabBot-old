@@ -1,4 +1,6 @@
 import discord
+import json
+import requests
 import guess_the_number
 
 intents = discord.Intents.default()
@@ -33,6 +35,13 @@ async def on_message(message):
 
     if msg == "Hello LabBot":
         await message.channel.send("Hello " + message.author.name + '!')
+
+    if msg == "!inspire":
+        response = requests.get("https://zenquotes.io/api/random")
+        json_data = json.loads(response.text)
+        # concat quote and author
+        quote = json_data[0]['q'] + " - " + json_data[0]['a']
+        await message.channel.send(quote)
 
     if msg == "!guess":
         await message.channel.send("Guess the number from 1-10")
