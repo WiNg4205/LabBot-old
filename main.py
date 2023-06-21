@@ -7,15 +7,18 @@ from datetime import datetime
 
 intents = discord.Intents.default()
 client = discord.Client(intents=intents)
-intents.message_content = True  
+intents.message_content = True
+
 
 @client.event
 async def on_ready():
     print('We have logged in as {0.user}'.format(client))
     print(client.user)
 
+
 game = ""
 num = 0
+
 
 @client.event
 async def on_message(message):
