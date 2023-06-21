@@ -83,4 +83,4 @@ async def send_notification(msg):
     await channel.send("notification")
 
 
-client.run("MTExMTgwMDkxNjU4OTQzMjkwNg.GPUKV-.cCcYBeFtoV94kOeLW-BQwPc5eoGchMTX5h4PKw")  # replace TOKEN with the actual token
+client.run("TOKEN")  # replace TOKEN with the actual token
