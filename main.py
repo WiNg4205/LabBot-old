@@ -78,6 +78,10 @@ async def send_notification(msg):
     
     try:
         scheduled_time = datetime(int(date_ls[2]), int(date_ls[1]), int(date_ls[0]), int(time_ls[0]), int(time_ls[1]), int(time_ls[2]))
+        if scheduled_time < datetime.now():
+            await channel.send("Invalid time")
+            return
+
         while datetime.now() < scheduled_time:
             await asyncio.sleep(1)
     except ValueError:
