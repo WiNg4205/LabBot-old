@@ -59,6 +59,10 @@ async def on_message(message):
     if msg.startswith("!setNotification"):
         await send_notification(msg)
 
+    if msg == "!weather":
+        weather = apis.get_weather()
+        await message.channel.send(weather)
+
 
 async def send_notification(msg):
     msg = msg.replace("!setNotification ", "")
