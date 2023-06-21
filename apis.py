@@ -40,7 +40,7 @@ def get_weather():
     response = requests.get(url)
     weather_data = response.json()
 
-    weathercodes = {0:'Clear sky', 1:'Mainly clear', 2:'Partly cloudy', 3:'Overcast', 45:'Fog', 51:'Light drizzle', 53:'Moderate drizzle', 55:'Heavy drizzle', 61:'Light rain', 63:'Moderate rain', 65:'Heavy rain',            80:'Light  showers', 81:'Moderate showers', 82:'Heavy showers'}
+    weathercodes = {0:'Clear sky', 1:'Mainly clear', 2:'Partly cloudy', 3:'Overcast', 45:'Fog', 51:'Light drizzle', 53:'Moderate drizzle', 55:'Heavy drizzle', 61:'Light rain', 63:'Moderate rain', 65:'Heavy rain', 80:'Light  showers', 81:'Moderate showers', 82:'Heavy showers'}
     
     time_ls = weather_data['current_weather']['time'].split('T')
     current_time = time_ls[1]
