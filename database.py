@@ -98,6 +98,7 @@ def update_team_scores(name_1, name_2, wins, losses):
 
     connection.close()
 
+
 def update_individual_scores(name_1, name_2, wins, losses):
     connection = sqlite3.connect("scores.db")
     cursor = connection.cursor()
@@ -121,6 +122,7 @@ def update_individual_scores(name_1, name_2, wins, losses):
         
     connection.close()
 
+
 def get_best_team():
     connection = sqlite3.connect("scores.db")
     cursor = connection.cursor()
@@ -135,6 +137,7 @@ def get_best_team():
     cursor.execute(sql)
     val = cursor.fetchall()
     return val
+
 
 def get_worst_team():
     connection = sqlite3.connect("scores.db")
