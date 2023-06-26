@@ -1,7 +1,9 @@
-import discord
 import guess_the_number
 import apis
-import threading
+import database
+import stats
+
+import discord
 import asyncio
 from datetime import datetime
 
@@ -63,6 +65,92 @@ async def on_message(message):
         weather = apis.get_weather()
         await message.channel.send(weather)
 
+    if msg == "!initialise":
+        database.initialise_db()
+    
+    if msg.startswith("!addPlayer"):
+        name = msg.replace("!addPlayer ", "")
+        database.add_player(name)
+
+    if msg.startswith("!getPlayer"):
+        name = msg.replace("!getPlayer ", "")
+        player = database.get_player(name)
+        name = player[0][0]
+        wins = str(player[0][1])
+        losses = str(player[0][2])
+
+        if player:
+            string = name + "\n" + "Wins: " + wins + "\n" + "Losses: " + losses
+            await message.channel.send(string)
+        else:
+            await message.channel.send("Player does not exist in database")
+
+    if msg.startswith("!getTeam"):
+        names = msg.replace("!getTeam ", "")
+        names = names.split(" ")
+        if len(names) != 2:
+            await message.channel.send("Wrong format")
+        
+        team = database.get_team(names[0], names[1])
+        wins = str(team[0][2])
+        losses = str(team[0][3])
+
+        if team:
+            string = team[0][0] + ", " + team[0][1] + "\n" + "Wins: " + wins + "\n" + "Losses: " + losses
+            await message.channel.send(string)
+        else:
+            await message.channel.send("Team does not exist in database")
+
+    if msg.startswith("!gameResult"):
+        msg = msg.replace("!gameResult ", "")
+        msg_split = msg.split(" ")
+        
+        try:
+            name_1 = msg_split[0]
+            name_2 = msg_split[1]
+            wins = int(msg_split[2].split("-")[0])
+            losses = int(msg_split[2].split("-")[1])
+            
+            database.update_team_scores(name_1, name_2, wins, losses)
+            database.update_individual_scores(name_1, name_2, wins, losses)
+            await message.channel.send("Scores updated")
+        except IndexError:
+            await message.channel.send("Wrong format")
+  
+    if msg.startswith("!winrate"):
+        msg = msg.replace("!winrate ", "")
+        msg_split = msg.split(" ")
+        if len(msg_split) > 2 or len(msg_split) <= 0:
+            await message.channel.send("Wrong format")
+            return
+        
+        # Player
+        if len(msg_split) == 1:
+            win_rate = stats.get_player_win_rate(msg_split[0])
+            if win_rate:
+                win_rate_str = str(win_rate) + "%"
+                await message.channel.send(win_rate_str)
+            else:
+                await message.channel.send("Player does not exist in the database")
+        # Team
+        else:
+            win_rate = stats.get_team_win_rate(msg_split[0], msg_split[1])
+            if win_rate: 
+                win_rate_str = str(win_rate) + "%"                                   
+                await message.channel.send(win_rate_str)
+            else:
+                await message.channel.send("Team does not exist in the database")
+
+    if msg == "!bestTeam":
+        name_1, name_2, win_rate = stats.get_best_team()
+        string = name_1 + ", " + name_2 + "\n" + "Win rate: " + str(win_rate) + "%"
+        await message.channel.send(string)
+
+    if msg == "!worstTeam":
+        name_1, name_2, win_rate = stats.get_worst_team()
+        string = name_1 + ", " + name_2 + "\n" + "Win rate: " + str(win_rate) + "%"
+        await message.channel.send(string)
+
 
 async def send_notification(msg):
     msg = msg.replace("!setNotification ", "")
@@ -90,5 +178,5 @@ async def send_notification(msg):
         
     await channel.send("notification")
 
-
+#MTExMTgwMDkxNjU4OTQzMjkwNg.GnYsSF.3rwcmYwp5iziTbFiBL4KtAFc_dS9YMTOLa0TWY
 client.run("TOKEN")  # replace TOKEN with the actual token
